@@ -1,7 +1,4 @@
 {{ define "main" }}
-<h1>{{ .Site.Title }}</h1>
-{{ with .Site.Params.description }}<p class="site-description">{{ . }}</p>{{ end }}
-
 <section class="posts">
   {{ range where .Site.RegularPages "Section" "posts" }}
   <article>
