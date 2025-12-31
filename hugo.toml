@@ -1,6 +1,6 @@
 baseURL = 'https://blog.theworldmessage.com/'
 languageCode = 'en-us'
-title = 'My Blog'
+title = 'A place for me to write things'
 theme = 'minimal'
 
 [params]
