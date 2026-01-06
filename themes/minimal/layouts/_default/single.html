@@ -7,5 +7,22 @@
   <div class="content">
     {{ .Content }}
   </div>
+
+  {{- if or .PrevInSection .NextInSection }}
+  <nav class="post-navigation" id="post-navigation">
+    {{- if .PrevInSection }}
+    <a href="{{ .PrevInSection.RelPermalink }}" class="nav-link nav-prev">
+      <span class="nav-direction">← PREVIOUS</span>
+      <span class="nav-title">{{ .PrevInSection.Title }}</span>
+    </a>
+    {{- end }}
+    {{- if .NextInSection }}
+    <a href="{{ .NextInSection.RelPermalink }}" class="nav-link nav-next">
+      <span class="nav-direction">NEXT →</span>
+      <span class="nav-title">{{ .NextInSection.Title }}</span>
+    </a>
+    {{- end }}
+  </nav>
+  {{- end }}
 </article>
 {{ end }}

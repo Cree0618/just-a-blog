@@ -1,9 +1,10 @@
 baseURL = 'https://blog.theworldmessage.com/'
 languageCode = 'en-us'
-title = 'A place for me to write things'
+title = 'Blog'
 theme = 'minimal'
 
 [params]
+  twitter = "https://x.com/cigsandcoffe3"
 
 
 [permalinks]

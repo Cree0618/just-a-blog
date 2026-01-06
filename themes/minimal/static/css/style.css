@@ -1,3 +1,4 @@
+
 * {
   margin: 0;
   padding: 0;
@@ -5,25 +6,81 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-family: "Iosevka", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   font-size: 18px;
   line-height: 1.6;
-  color: #111;
-  background: #fff;
-  max-width: 650px;
+  color: #e3dada;
+  background: #44413ce7;
+  max-width: 800px;
   margin: 0 auto;
   padding: 2rem 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* this is the > markdown styling */
+.content blockquote {
+  color: #f7cd72b9;
+  /* Using the gold color from your title underline */
+  border-left: 1px solid #696969;
+  /* A vertical line on the left */
+  padding-left: 1rem;
+  /* Space between the vertical line and text */
+  margin-left: 0;
+  margin-right: 0;
+  font-style: italic;
+  /* Optional: makes it look more like a quote */
+}
+
+/* Hugo's Markdown engine often wraps the text inside a <p> tag */
+.content blockquote p {
+  margin-bottom: 0;
+  /* Prevents extra spacing inside the quote */
+  color: #f7cd72b9;
+  /* Ensures the <p> takes the gold color from above */
+}
+
+.content strong,
+.content b {
+  font-weight: 700;
+  /* Use the 700 weight we just downloaded */
+  color: #f7cd72b9;
+  /* Make it pure white to pop against the #f3f3f3 body text */
 }
 
 header {
   margin-bottom: 5rem;
 }
 
+main {
+  flex: 1;
+}
+
 .site-title {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 600;
-  color: #111;
+  color: #f3f3f3;
   text-decoration: none;
+  display: inline-block;
+  text-decoration: underline;
+
+
+}
+
+.site-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  /* 4. The Vertical Tick */
+  width: 2px;
+  /* Match the border-bottom thickness */
+  height: 10px;
+  /* How tall the tick is */
+  background-color: #ffae00b9;
+  /* Match the border color */
 }
 
 .site-title:hover {
@@ -31,22 +88,26 @@ header {
 }
 
 .site-description {
-  color: #666;
+  color: #f3f3f3;
   margin-top: 0.5rem;
+  border-bottom: 1px solid #e0e0e0a4;
+  padding-bottom: 1rem;
 }
 
 .posts article {
   margin-bottom: 1rem;
+  display: flex;
+  align-items: baseline;
 }
 
 .posts time {
-  color: #666;
+  color: #e0e0e0a4;
   font-size: 0.9rem;
-  margin-right: 1rem;
+  min-width: 120px;
 }
 
 .posts a {
-  color: #111;
+  color: #f3f3f3;
   text-decoration: none;
 }
 
@@ -58,19 +119,73 @@ header {
   margin-bottom: 2rem;
 }
 
+.post {
+  margin-bottom: 8rem;
+}
+
 .post h1 {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   margin-bottom: 0.5rem;
+  display: inline-block;
+  padding-left: 10px;
+  padding-bottom: 0.1rem;
+  padding-right: 5px;
+  margin-left: -15px;
+  border-bottom: 1px solid #ffae0050;
+  position: relative;
+}
+
+.post h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 12px;
+  width: 1px;
+  background-color: #ffae0050;
+}
+ol li::marker {
+  color: #ffae00b9;
+
+  font-family: "Iosevka", monospace;
 }
 
 .post time {
-  color: #666;
+  color: #e0e0e0a4;
   font-size: 0.9rem;
+  margin-top: 0.75rem;
+  display: block;
 }
 
-.content h2, .content h3 {
+.content h2,
+.content h3 {
   margin-top: 2rem;
   margin-bottom: 1rem;
+  display: inline-block;
+
+  /* 1. Add padding to the left to grow the border */
+  padding-left: 10px;
+  padding-bottom: 0.1rem;
+  padding-right: 5px;
+
+  /* 2. OPTIONAL: Pull the header back to the left so the 
+     text stays aligned with your paragraphs */
+  margin-left: -15px;
+
+  border-bottom: 1px solid #ffae0050;
+  position: relative;
+}
+
+.content h2::after,
+.content h3::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  /* 3. This stays at 0, which is now 15px to the left of the text */
+  left: 0;
+  height: 12px;
+  width: 1px;
+  background-color: #ffae0050;
 }
 
 .content p {
@@ -107,12 +222,94 @@ header {
 .content blockquote {
   border-left: 3px solid #ddd;
   padding-left: 1rem;
-  color: #666;
+  color: #667;
   margin-bottom: 1rem;
 }
 
 footer {
-  margin-top: 4rem;
+  margin-top: 8rem;
+  margin-top: auto;
   color: #999;
   font-size: 0.85rem;
+}
+
+.twitter-link {
+  display: inline-block;
+  color: #999;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 600;
+  font-family: "Iosevka", monospace;
+  letter-spacing: 0.15em;
+}
+
+
+
+
+.twitter-link:hover {
+  color: #ffae00b9;
+}
+
+.twitter-link:hover::after,
+.twitter-link:hover::before {
+  background-color: #ffae00b9;
+}
+
+.twitter-link:hover::before {
+  height: 12px;
+}
+
+.post-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e0e0e0a4;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  visibility: hidden;
+}
+
+.post-navigation.visible {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav-link {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  max-width: 45%;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover .nav-title {
+  color: #f7cd72b9;
+}
+
+.nav-direction {
+  font-size: 1rem;
+  color: #f7cd72b9;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  font-family: "Iosevka", monospace;
+  letter-spacing: 0.1em;
+}
+
+.nav-title {
+  font-size: 0.95rem;
+  color: #e3dada;
+  transition: color 0.2s ease;
+  line-height: 1.4;
+}
+
+.nav-next {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.post-navigation:has(.nav-next:only-child) {
+  justify-content: flex-end;
 }

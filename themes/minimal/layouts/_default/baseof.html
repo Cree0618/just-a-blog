@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5.0.0/index.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5.0.0/700.css">
   <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -13,5 +15,44 @@
   <main>
     {{ block "main" . }}{{ end }}
   </main>
+
+  <footer>
+    <a href="{{ .Site.Params.twitter }}" class="twitter-link" aria-label="Twitter">twitter</a>
+  </footer>
+
+  <script>
+    (function() {
+      var nav = document.getElementById('post-navigation');
+      if (!nav) return;
+
+      var lastScrollTop = 0;
+      var ticking = false;
+
+      function updateNavVisibility() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        var scrollHeight = document.documentElement.scrollHeight;
+        var clientHeight = document.documentElement.clientHeight;
+        var atBottom = scrollHeight - scrollTop - clientHeight < 100;
+
+        if (atBottom) {
+          nav.classList.add('visible');
+        } else if (scrollTop > lastScrollTop) {
+          nav.classList.remove('visible');
+        }
+
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          requestAnimationFrame(updateNavVisibility);
+          ticking = true;
+        }
+      });
+
+      updateNavVisibility();
+    })();
+  </script>
 </body>
 </html>
