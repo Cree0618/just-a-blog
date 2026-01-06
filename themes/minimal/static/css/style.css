@@ -65,23 +65,9 @@ main {
   display: inline-block;
   text-decoration: underline;
 
-
 }
 
-.site-title::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
 
-  /* 4. The Vertical Tick */
-  width: 2px;
-  /* Match the border-bottom thickness */
-  height: 10px;
-  /* How tall the tick is */
-  background-color: #ffae00b9;
-  /* Match the border color */
-}
 
 .site-title:hover {
   text-decoration: underline;
