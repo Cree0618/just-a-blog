@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: "Iosevka", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   font-size: 18px;
   line-height: 1.6;
   color: #e3dada;
@@ -147,7 +147,7 @@ main {
 ol li::marker {
   color: #ffae00b9;
 
-  font-family: "Iosevka", monospace;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
 }
 
 .post time {
@@ -239,7 +239,7 @@ footer {
   text-decoration: none;
   transition: color 0.2s ease;
   font-weight: 600;
-  font-family: "Iosevka", monospace;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
   letter-spacing: 0.15em;
 }
 
@@ -294,7 +294,7 @@ footer {
   color: #f7cd72b9;
   font-weight: 700;
   margin-bottom: 0.25rem;
-  font-family: "Iosevka", monospace;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
   letter-spacing: 0.1em;
 }
 
