@@ -9,7 +9,7 @@
   </div>
 
   {{- if or .PrevInSection .NextInSection }}
-  <nav class="post-navigation" id="post-navigation">
+  <nav class="post-navigation">
     {{- if .PrevInSection }}
     <a href="{{ .PrevInSection.RelPermalink }}" class="nav-link nav-prev">
       <span class="nav-direction">← PREVIOUS</span>

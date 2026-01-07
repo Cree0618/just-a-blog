@@ -30,7 +30,8 @@ It's all fun and games, when you're starting out and experience the feeling of t
 In the last year I was exploring **how to make code do something I want**. I managed to turn many shower ideas into real stuff in the computer that works (usually as intended). 
 Looking back, I maybe made a mistake of not documenting any of it - apparently this is the way of doing it if you want exposure, connect with people and 
 find new opportunities. But I was never into this sort of stuff so I never shared it. It's really hard to get 
-a **working feedback loop** if you spend all your time sitting alone in a room looking at a screen and typing. **This feedback loop is very important.**
+a **working feedback loop** if you spend all your time sitting alone in a room looking at a screen and typing.  
+**The feedback loop is very important.**
 
 ### Building this feedback loop
 I started by making this blog, next important step is to keep writing here.  
