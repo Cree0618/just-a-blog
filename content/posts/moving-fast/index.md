@@ -19,3 +19,4 @@ We achieved controlled nuclear fusion, put humans on the moon, made quantum comp
 Context window is going to get bigger, new techniques like [RML](https://arxiv.org/html/2512.24601v1) are going to help prevent context rot, tool use will be big and next gen models are going to get better at using tools.  
 Less entering of data in excel sheet. The process of back and forward between you and lawyers just to review the contract - a process that stretched over 3 days and 6 emails will be done in 30 minutes and $20 worth of API credits.  
 > Human will exist in the loop only to take legal accountability.
+
