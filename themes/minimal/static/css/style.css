@@ -141,8 +141,40 @@ ol li::marker {
 .post time {
   color: #e0e0e0a4;
   font-size: 0.9rem;
-  margin-top: 0.75rem;
   display: block;
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.language-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+
+.language-switcher a {
+  color: #e0e0e0a4;
+  text-decoration: none;
+  padding: 0.15rem 0.35rem;
+  border: 1px solid transparent;
+}
+
+.language-switcher a:hover {
+  color: #f7cd72b9;
+}
+
+.language-switcher a.active {
+  color: #f7cd72b9;
+  border-color: #ffae0050;
 }
 
 .content h2,
@@ -213,6 +245,25 @@ ol li::marker {
   padding-left: 1rem;
   color: #667;
   margin-bottom: 1rem;
+}
+
+.content table {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.content th,
+.content td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ffae0050;
+}
+
+.content th {
+  border-bottom: 2px solid #ffae00b9;
+  color: #f7cd72b9;
 }
 
 .content hr {

@@ -1,7 +1,21 @@
 baseURL = 'https://blog.theworldmessage.com/'
-languageCode = 'en-us'
 title = 'writing just for the sake of it'
 theme = 'minimal'
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = false
+
+[languages]
+  [languages.en]
+    languageCode = 'en-US'
+    languageName = 'English'
+    locale = 'en-US'
+    weight = 1
+
+  [languages.cs]
+    languageCode = 'cs-CZ'
+    languageName = 'Čeština'
+    locale = 'cs-CZ'
+    weight = 2
 
 [params]
   twitter = "https://x.com/cigsandcoffe3"
