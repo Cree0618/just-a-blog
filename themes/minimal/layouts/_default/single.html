@@ -2,7 +2,18 @@
 <article class="post">
   <header>
     <h1>{{ .Title }}</h1>
-    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+    <div class="post-meta">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time>
+      {{- with .Translations }}
+      <nav class="language-switcher" aria-label="{{ i18n "language_switcher" }}">
+        {{- range $.AllTranslations }}
+        <a href="{{ .RelPermalink }}" hreflang="{{ .Language.LanguageCode }}" lang="{{ .Language.Lang }}"{{ if eq .Language.Lang $.Language.Lang }} class="active" aria-current="page"{{ end }}>
+          {{- if eq .Language.Lang "cs" }}CZE{{ else }}ENG{{ end -}}
+        </a>
+        {{- end }}
+      </nav>
+      {{- end }}
+    </div>
   </header>
   <div class="content">
     {{ .Content }}
@@ -12,13 +23,13 @@
   <nav class="post-navigation">
     {{- if .PrevInSection }}
     <a href="{{ .PrevInSection.RelPermalink }}" class="nav-link nav-prev">
-      <span class="nav-direction">← PREVIOUS</span>
+      <span class="nav-direction">← {{ i18n "previous" }}</span>
       <span class="nav-title">{{ .PrevInSection.Title }}</span>
     </a>
     {{- end }}
     {{- if .NextInSection }}
     <a href="{{ .NextInSection.RelPermalink }}" class="nav-link nav-next">
-      <span class="nav-direction">NEXT →</span>
+      <span class="nav-direction">{{ i18n "next" }} →</span>
       <span class="nav-title">{{ .NextInSection.Title }}</span>
     </a>
     {{- end }}

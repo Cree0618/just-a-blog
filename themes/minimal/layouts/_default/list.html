@@ -2,8 +2,8 @@
 <section class="posts">
   {{ range where .Site.RegularPages "Section" "posts" }}
   <article>
-    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
-    <a href="{{ .Permalink }}">{{ .Title }}</a>
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_medium" }}</time>
+    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
   </article>
   {{ end }}
 </section>
