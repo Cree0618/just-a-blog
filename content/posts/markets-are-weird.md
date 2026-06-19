@@ -18,7 +18,7 @@ I know it's probably more complicated, but that's how I see it. Effective alloca
 Right now, there is a lot of excitement about LLMs. You are probably sick of it. A shoe company announces a pivot to AI? Stocks go up by 580% (real btw: [Allbirds shares soar 580% after pivot from shoes to AI
 ](https://www.bbc.com/news/articles/c98mrepzgj7o))
 
-<img src="/images/shoe-company.png" alt="shoe company stock chart" style="max-width: 500px; width: 100%;">
+{{< responsive-image src="images/shoe-company.png" alt="shoe company stock chart" maxWidth="500px" >}}
 
 Companies in this AI/semiconductor/chip sector trade for very high P/E ratios and the market is pricing in revenue 2-3 years in the future. You can look at this and feel a little strange. 
 
@@ -27,7 +27,7 @@ Are you "AGI pilled"? If the answer is YES, you probably made a lot of money so 
 
 Surely they can't capture the trillions of dollars in revenue like they say, right? 
 
-<img src="/images/hyperscaler-ai-capex.png" alt="Hyperscaler AI Capex" style="max-width: 700px; width: 100%;">
+{{< responsive-image src="images/hyperscaler-ai-capex.png" alt="Hyperscaler AI Capex" maxWidth="700px" >}}
 
 | Camp                               | Current 2026 claim                                                                                                                                                                                                              |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -76,4 +76,3 @@ Maybe in this scenario, putting the data centers in space actually does make sen
 
 
 I can't shake the feeling that a massive surveillance tool is being built.
-

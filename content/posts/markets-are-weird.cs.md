@@ -19,7 +19,7 @@ Vím, že je to pravděpodobně složitější, ale takhle to vidím. Efektivní
 Kolem LLM je teď velké nadšení. Nejpíš ho máš plné zuby. Obuvnická firma oznámí přechod na AI? Akcie jdou nahoru o 580 % (fakt: [Akcie Allbirds po přechodu od bot k AI vzrostly o 580 %
 ](https://www.bbc.com/news/articles/c98mrepzgj7o))
 
-<img src="/images/shoe-company.png" alt="Graf akcií obuvnické firmy" style="max-width: 500px; width: 100%;">
+{{< responsive-image src="images/shoe-company.png" alt="Graf akcií obuvnické firmy" maxWidth="500px" >}}
 
 Akcie firem z oblasti AI, polovodičů a čipů se obchodují za velmi vysoké násobky P/E a trh do jejich cen započítává tržby očekávané za 2–3 roky. Možná se na to díváte a přijde vám to trochu divné.
 
@@ -28,7 +28,7 @@ Jste „AGI-pilled“? Pokud je odpověď ANO, pravděpodobně jste zatím vydě
 
 Přece si nemohou ukrojit biliony dolarů tržeb, jak tvrdí, ne?
 
-<img src="/images/hyperscaler-ai-capex.png" alt="Kapitálové výdaje hyperscalerů na AI" style="max-width: 700px; width: 100%;">
+{{< responsive-image src="images/hyperscaler-ai-capex.png" alt="Kapitálové výdaje hyperscalerů na AI" maxWidth="700px" >}}
 
 | Pohled                                | Aktuální tvrzení pro rok 2026                                                                                                                                                                                |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
