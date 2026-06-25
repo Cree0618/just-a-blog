@@ -4,15 +4,7 @@
     <h1>{{ .Title }}</h1>
     <div class="post-meta">
       <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time>
-      {{- with .Translations }}
-      <nav class="language-switcher" aria-label="{{ i18n "language_switcher" }}">
-        {{- range $.AllTranslations }}
-        <a href="{{ .RelPermalink }}" hreflang="{{ .Language.LanguageCode }}" lang="{{ .Language.Lang }}"{{ if eq .Language.Lang $.Language.Lang }} class="active" aria-current="page"{{ end }}>
-          {{- if eq .Language.Lang "cs" }}CZE{{ else }}ENG{{ end -}}
-        </a>
-        {{- end }}
-      </nav>
-      {{- end }}
+      {{ partial "language-switcher.html" . }}
     </div>
   </header>
   <div class="content">

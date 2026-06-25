@@ -1,0 +1,9 @@
+{{- if gt (len .AllTranslations) 1 }}
+<nav class="language-switcher" aria-label="{{ if .IsHome }}{{ i18n "site_language" }}{{ else }}{{ i18n "language_switcher" }}{{ end }}">
+  {{- range .AllTranslations }}
+  <a href="{{ .RelPermalink }}" hreflang="{{ .Language.LanguageCode }}" lang="{{ .Language.Lang }}"{{ if eq .Language.Lang $.Language.Lang }} class="active" aria-current="page"{{ end }}>
+    {{- if eq .Language.Lang "cs" }}CZE{{ else }}ENG{{ end -}}
+  </a>
+  {{- end }}
+</nav>
+{{- end }}

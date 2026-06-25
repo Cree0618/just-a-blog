@@ -1,6 +1,9 @@
 [language_switcher]
 other = "Article language"
 
+[site_language]
+other = "Site language"
+
 [previous]
 other = "PREVIOUS"
 

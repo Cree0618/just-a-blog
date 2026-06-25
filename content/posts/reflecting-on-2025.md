@@ -1,6 +1,7 @@
 ---
-title: "Reflecting on 2025 and past years"
+title: Reflecting on 2025 and past years
 date: 2026-01-04
+draft: true
 ---
 
 I've made so many mistakes. So many wasted days and opportunities. Gloomy days with very little hope. But I have to admit that I also

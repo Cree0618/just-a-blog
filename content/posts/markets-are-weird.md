@@ -42,6 +42,11 @@ Obviously, the AI buildout will need a lot of money. The money doesn't come from
 It's all cool if the borrowed money that goes into CAPEX generates 20% returns per year. This is doable if you build data centers and make tokens. The margins on tokens are good. Smarter tokens have higher margins but there will be increased demand for open-source models as they get smarter and thus more usable. You make money either way.
 But what if you're now serving 2x tokens but 50% of them come from open-source models and have lower margins?
 
+**What will be the next step in LLM architecture?**
+The last step was large context with agentic, multi-step loops. Made possible by better data and training environments. MoE models became the architecture of choice. I really wonder, how are the future changes going to look like?   
+To answer this question, maybe we should look to areas where the models struggle today. 
+**Degradation of the context window** - the original data that's being processed is tokenized and embedded in the context window. Context windows serves as kinda of "short term memory" for the LLM. But after processing 100k tokens, it starts to slowly break. Connections between information are broken or malformed, details forgotten - the data stops providing signal.
+Maybe we will start training the context window similar to how we have environments to learn coding, we will have environments where the model can train how to adjust, layout and modify it's context window. People are already trying this. But at the end of the day, is still just finding local and global optimum? Just finding better ways to do gradient descent? 
 I have no clue what attention mechanism is GPT and Claude are using, but they most likely have something similar and better than DeepSeeks [Compressed Sparse Attention - CSA](https://deepseek.ai/blog/deepseek-v4-compressed-attention). From my understanding, the CSA doesn't improve the models attention but only allows to **compress the KV cache by a lot** - you basically have 3 levels of compression and only one of them is the "classic" and expensive full attention. If you train the model from the beginning using this approach, you don't really use performance, maybe a little, but it's worth. 
 
 | Type of attention                             | Property                                                         |
@@ -65,8 +70,7 @@ Faster training, cheaper token generation, higher TPS—all a **big advantage**.
 | Dense FP8 training    | ~360 PFLOPS¹ | 1,260 PFLOPS     | **3.5×**         |
 | Dense BF16 training   | ~180 PFLOPS¹ | 288 PFLOPS       | **1.6×**         |
 # Can they build the datacenters?
-It can take more than a year to get a permit and at least another year to build the data center. 
-That assumes you are lucky enough to secure a GPU allocation, power, cooling, networking, and so on. There is a good chance you are not getting any power from the grid, so you scramble to produce power behind the meter and gas turbines are sold out until 2030.
+It can take 4 years to build the data center. That assumes you are lucky enough to secure a GPU allocation, power, cooling, networking, and so on. There is a good chance you are not getting any power from the grid, so you scramble to produce power behind the meter and gas turbines are sold out until 2030.  
 That's why the price of GPU hours is doubling now. Not enough capacity will be added in the next 1-2 years, so there is a big premium to be paid when old contracts expire and are renewed at twice the price. The premium is even larger because you have to price in the missed opportunity/revenue if you don't secure the capacity. 
 Maybe in this scenario, putting the data centers in space actually does make sense. You get paid 2x for every GW of compute you can get online in the next 6-12 months. But I think that the premium decreases as time goes on. It's really a high-risk, high-reward game. This might be the reason why SpaceX stock is so expensive.  
 **It's always sunny in space and you don't need permits.**  

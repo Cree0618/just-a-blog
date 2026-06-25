@@ -1,10 +1,12 @@
 {{ define "main" }}
 <section class="posts">
   {{ range where .Site.RegularPages "Section" "posts" }}
+  {{- if and .Title (not .Date.IsZero) }}
   <article>
     <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_medium" }}</time>
     <a href="{{ .RelPermalink }}">{{ .Title }}</a>
   </article>
+  {{- end }}
   {{ end }}
 </section>
 {{ end }}
