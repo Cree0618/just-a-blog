@@ -7,7 +7,7 @@ A lot of time has passed and I wasn't writing or coding much. I simply ran out o
 I've been interested in the LLM space for a while and now I'm trying to understand the market behind it. I may be wrong; if so, please tell me.
 
 # My silly view of the market
-I'm not an expert; I'm a noob, and you should do your own research. So let's start.  
+I'm not an expert; I'm a noob, and you should do your own research.
 
 **What are these markets anyway?**  
 From my understanding, buying stocks is like lending money. A company needs a few billies? Stinky bank doesn't want to loan you billies? 

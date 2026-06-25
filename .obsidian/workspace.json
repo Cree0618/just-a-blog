@@ -27,16 +27,15 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/posts/sober view of the future.cs.md",
+                "file": "content/posts/opensource-models-impact.cs.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "sober view of the future.cs"
+              "title": "opensource-models-impact.cs"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -109,7 +108,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "content/posts/sober view of the future.cs.md",
+                "file": "content/posts/markets-are-weird.cs.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -119,7 +118,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for sober view of the future.cs"
+              "title": "Backlinks for markets-are-weird.cs"
             }
           },
           {
@@ -128,12 +127,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "content/posts/sober view of the future.cs.md",
+                "file": "content/posts/markets-are-weird.cs.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from sober view of the future.cs"
+              "title": "Outgoing links from markets-are-weird.cs"
             }
           },
           {
@@ -171,13 +170,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "content/posts/sober view of the future.cs.md",
+                "file": "content/posts/markets-are-weird.cs.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of sober view of the future.cs"
+              "title": "Outline of markets-are-weird.cs"
             }
           }
         ]
@@ -198,31 +197,32 @@
       "bases:Create new base": false
     }
   },
-  "active": "0e5db33cd2bc0128",
+  "active": "e12a8249e734271d",
   "lastOpenFiles": [
+    "content/posts/opensource-models-impact.cs.md",
+    "content/posts/opensource-models-impact.md",
+    "content/posts/late night thoughts.md",
+    "public/cs/posts/dopad-dobrých-open-source-modelů/index.html",
+    "public/cs/posts/dopad-dobrých-open-source-modelů",
+    "content/posts/markets-are-weird.cs.md",
+    "public/posts/late-night-thoughts/index.html",
+    "public/posts/late-night-thoughts",
+    "content/posts/markets-are-weird.md",
+    "content/posts/sober view of the future.md",
+    "content/posts/writing-again.md",
+    "content/posts/true-or-not.md",
+    "content/posts/reflecting-on-2025.md",
+    "content/posts/sober view of the future.cs.md",
+    "content/posts/1001.cs.md",
     "static/images/female-europe-demographic.jpeg",
     "public/images/female-europe-demographic.jpeg",
-    "content/posts/sober view of the future.md",
     "public/cs/posts/střízlivý-pohled-na-budoucnost/index.html",
     "public/cs/posts/střízlivý-pohled-na-budoucnost",
     "public/cs/posts/strizlivy-pohled-na-budoucnost/index.html",
     "public/cs/posts/strizlivy-pohled-na-budoucnost",
-    "content/posts/sober view of the future.cs.md",
-    "content/posts/late night thoughts.md",
-    "content/posts/markets-are-weird.cs.md",
-    "content/posts/markets-are-weird.md",
-    "content/posts/writing-again.md",
-    "content/posts/true-or-not.md",
-    "content/posts/reflecting-on-2025.md",
-    "content/posts/opensource-models-impact.md",
-    "content/posts/1001.cs.md",
     "public/cs/posts/moje-psaní-je-hrozné/index.html",
     "public/cs/posts/moje-psaní-je-hrozné",
-    "public/cs/posts/my-writing-is-awful/index.html",
-    "public/cs/posts/my-writing-is-awful",
     "content/posts/1001.md",
-    "themes/minimal/layouts/partials/language-switcher.html",
-    "public/posts/sober-view-of-the-future/index.html",
     "content/posts/moving-fast/index.md",
     "content/posts/markets-are-werid.md",
     "public/images/hyperscaler-ai-capex.png",

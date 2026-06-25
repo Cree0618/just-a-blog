@@ -1,5 +1,5 @@
 ---
-title: Dává to smysl?
+title: dává to smysl?
 date: 2026-06-19
 slug: does-it-make-sense
 ---
@@ -8,7 +8,7 @@ Už uběhla spousta času a já moc nepsal ani neprogramoval. Jednoduše mi doš
 O LLMs se zajímám už nějakou dobu a teď se snažím pochopit trh, který kolem nich vznikl. Zkusil jsem napsat pár svých myšlenek. Možná se mýlím; pokud ano, dejte mi vědět.
 
 # Můj naivní pohled na trh
-Nejsem expert, měli byste si udělat vlastní průzkum. Pojďme začít. 
+Nejsem expert, měli byste si udělat vlastní průzkum.
 
 **Co jsou vlastně ty trhy zač?**  
 Podle mě je nákup akcií něco jako půjčování peněz. Firma potřebuje pár miliard? Smradlavá banka jí nechce miliardy půjčit? 
@@ -19,7 +19,7 @@ Vím, že je to pravděpodobně složitější, ale takhle to vidím. Efektivní
 Kolem LLM je teď velké nadšení. Nejpíš ho máš plné zuby. Obuvnická firma oznámí přechod na AI? Akcie jdou nahoru o 580 % (fakt: [Akcie Allbirds po přechodu od bot k AI vzrostly o 580 %
 ](https://www.bbc.com/news/articles/c98mrepzgj7o))
 
-{{< responsive-image src="images/shoe-company.png" alt="Graf akcií obuvnické firmy" maxWidth="500px" >}}
+{{< responsive-image src="images/shoe-company.png" alt="Graf akcií obuvnické firmy" >}}
 
 Akcie firem z oblasti AI, polovodičů a čipů se obchodují za velmi vysoké násobky P/E a trh do jejich cen započítává tržby očekávané za 2–3 roky. Možná se na to díváte a přijde vám to trochu divné.
 
@@ -28,7 +28,7 @@ Jste „AGI-pilled“? Pokud je odpověď ANO, pravděpodobně jste zatím vydě
 
 Přece si nemohou ukrojit biliony dolarů tržeb, jak tvrdí, ne?
 
-{{< responsive-image src="images/hyperscaler-ai-capex.png" alt="Kapitálové výdaje hyperscalerů na AI" maxWidth="700px" >}}
+{{< responsive-image src="images/hyperscaler-ai-capex.png" alt="Kapitálové výdaje hyperscalerů na AI" >}}
 
 | Pohled                                | Aktuální tvrzení pro rok 2026                                                                                                                                                                                |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

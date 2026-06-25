@@ -15,8 +15,9 @@ Sociální tkanivo se bude dál trhat. Lidé stárnou a nemají děti. Mediánov
 
 
 {{< responsive-image src="images/female-europe-demographic.jpeg" alt="demografie žen v EU">}}  
+
   
-**Stálo to celé za to?**
+**Stálo to celé za to?**  
 Neschopní lidé s rozhodovací pravomocí to posrali. Teď už je to každému jasné. Nástroje pro masovou manipulaci jsou tak dobré, že se vlastně nebouříme, byli jsme přemoženi. Teď je to v rukou Stroje, [Molocha](https://slatestarcodex.com/2014/07/30/meditations-on-moloch/).
 
 Německý automobilový průmysl brzy zbankrotuje a my dostaneme velkou ránu. Byli jsme levná pracovní síla, kterou využívali silnější a rozvinutější. Ale co budeme dělat bez nich, až se továrny zavřou?
