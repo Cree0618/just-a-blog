@@ -7,8 +7,11 @@
   <link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
 </head>
 <body>
-  <header>
+  <header class="site-header">
     <a href="{{ .Site.Home.RelPermalink }}" class="site-title">{{ .Site.Title }}</a>
+    {{- if .IsHome }}
+    {{ partial "language-switcher.html" . }}
+    {{- end }}
   </header>
   <main>
     {{ block "main" . }}{{ end }}

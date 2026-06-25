@@ -1,0 +1,230 @@
+{
+  "main": {
+    "id": "22650b5a4134fd72",
+    "type": "split",
+    "children": [
+      {
+        "id": "19568e8efee9a736",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e12a8249e734271d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/posts/markets-are-weird.cs.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "markets-are-weird.cs"
+            }
+          },
+          {
+            "id": "aa37613fd1b7c259",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/posts/sober view of the future.cs.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "sober view of the future.cs"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f3a956e31b5f14ba",
+    "type": "split",
+    "children": [
+      {
+        "id": "4e9802ffadf79a3e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0e5db33cd2bc0128",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "219fac8b1a66735d",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "810869c3ab6a6aba",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "a9e884c44e397c7a",
+    "type": "split",
+    "children": [
+      {
+        "id": "a047dc25cc7ebcae",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2fb2f1fdb356931f",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "content/posts/sober view of the future.cs.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for sober view of the future.cs"
+            }
+          },
+          {
+            "id": "454d6f9ce7b2316d",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "content/posts/sober view of the future.cs.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from sober view of the future.cs"
+            }
+          },
+          {
+            "id": "fd6703485b05f377",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "04dac07e592ae5e3",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "2f3607964b09de47",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "content/posts/sober view of the future.cs.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of sober view of the future.cs"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "aa37613fd1b7c259",
+  "lastOpenFiles": [
+    "content/posts/sober view of the future.md",
+    "public/cs/posts/střízlivý-pohled-na-budoucnost/index.html",
+    "public/cs/posts/střízlivý-pohled-na-budoucnost",
+    "public/cs/posts/strizlivy-pohled-na-budoucnost/index.html",
+    "public/cs/posts/strizlivy-pohled-na-budoucnost",
+    "content/posts/sober view of the future.cs.md",
+    "public/images/female-europe-demographic.jpeg",
+    "content/posts/late night thoughts.md",
+    "content/posts/markets-are-weird.cs.md",
+    "content/posts/markets-are-weird.md",
+    "content/posts/writing-again.md",
+    "content/posts/true-or-not.md",
+    "content/posts/reflecting-on-2025.md",
+    "content/posts/opensource-models-impact.md",
+    "content/posts/1001.cs.md",
+    "public/cs/posts/moje-psaní-je-hrozné/index.html",
+    "public/cs/posts/moje-psaní-je-hrozné",
+    "public/cs/posts/my-writing-is-awful/index.html",
+    "public/cs/posts/my-writing-is-awful",
+    "content/posts/1001.md",
+    "themes/minimal/layouts/partials/language-switcher.html",
+    "public/posts/sober-view-of-the-future/index.html",
+    "content/posts/moving-fast/index.md",
+    "content/posts/markets-are-werid.md",
+    "public/images/hyperscaler-ai-capex.png",
+    "static/images/hyperscaler-ai-capex.png"
+  ]
+}

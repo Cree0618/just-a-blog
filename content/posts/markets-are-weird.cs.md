@@ -8,7 +8,7 @@ Už uběhla spousta času a já moc nepsal ani neprogramoval. Jednoduše mi doš
 O LLMs se zajímám už nějakou dobu a teď se snažím pochopit trh, který kolem nich vznikl. Zkusil jsem napsat pár svých myšlenek. Možná se mýlím; pokud ano, dejte mi vědět.
 
 # Můj naivní pohled na trh
-Nejsem expert, jsem začátečník a měli byste si udělat vlastní průzkum. Tak pojďme na to.  
+Nejsem expert, měli byste si udělat vlastní průzkum. Pojďme začít. 
 
 **Co jsou vlastně ty trhy zač?**  
 Podle mě je nákup akcií něco jako půjčování peněz. Firma potřebuje pár miliard? Smradlavá banka jí nechce miliardy půjčit? 
@@ -67,8 +67,7 @@ Rychlejší trénování, levnější generování tokenů, vyšší TPS – to 
 | Trénování Dense BF16  | ~180 PFLOPS¹ | 288 PFLOPS       | **1,6×**            |
 
 # Dokážou datová centra postavit?
-Získat povolení může trvat déle než rok a nejméně další rok zabere výstavba datového centra.
-To za předpokladu, že se vám podaří zajistit GPUs, elektřina, chlazena, síťovéhé připojení atd. Je docela možné, že ze sítě nedostanete žádnou elektřinu, takže se ji snažíte vyrábět přímo v areálu – a plynové turbíny jsou vyprodané až do roku 2030.
+Postavit datové centrum může trvat až 4 roky. To za předpokladu, že se vám podaří zajistit GPUs, elektřinu, chlazení atd. Je docela možné, že ze sítě nedostanete žádnou elektřinu, takže se ji snažíte vyrábět přímo v areálu – a plynové turbíny jsou vyprodané až do roku 2030.
 Proto se teď cena GPU hodiny zdvojnásobuje. Během příštího roku až dvou nepřibude dostatek kapacity, takže až staré smlouvy vyprší a budou se obnovovat za dvojnásobnou cenu, bude nutné zaplatit výraznou prémii. Ta je ještě vyšší, protože do ceny musíte započítat ušlou příležitost a tržby, pokud si kapacitu nezajistíte.
 Možná v tomto scénáři umístění datových center do vesmíru skutečně dává smysl. Za každý GW výpočetního výkonu, který dokážete uvést do provozu během příštích 6–12 měsíců, dostanete zaplaceno dvojnásobně. Myslím si ale, že tato prémie bude postupem času klesat. Je to hra s vysokým rizikem a vysokou odměnou. To je možná důvod, proč hodnota SpaceX je tak vysoká.  
 **Ve vesmíru je vždy slunečno a nepotřebujete povolení.**
