@@ -3,7 +3,7 @@
   <header>
     <h1>{{ .Title }}</h1>
     <div class="post-meta">
-      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time>
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2. 1. 2006" }}</time>
       {{ partial "language-switcher.html" . }}
     </div>
   </header>
