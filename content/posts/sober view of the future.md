@@ -21,6 +21,9 @@ The incompetent decision makers fucked up. It's obvious to anyone by now. The to
 
 The German car industry is going bankrupt soon and we will take a big hit. We were a cheap labour, being taken advantage of by the stronger, more developed. But what are we going to do without them, after the factories close?
 
+
+{{< responsive-image src="images/vw-stock.png" alt="VW stock graph">}}  
+
 Major civil unrest, unemployment followed by high inflation and GDP falling. This will affect the normal person. I live at the edge of society, so I'm not that worried, but others might.
 
 
