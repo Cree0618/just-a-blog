@@ -22,4 +22,4 @@ Neschopní lidé s rozhodovací pravomocí to posrali. Teď už je to každému 
 
 Německý automobilový průmysl brzy zbankrotuje a my dostaneme velkou ránu. Byli jsme levná pracovní síla, kterou využívali silnější a rozvinutější. Ale co budeme dělat bez nich, až se továrny zavřou?
 
-Velké občanské nepokoje, nezaměstnanost následovaná vysokou inflací a poklesem HDP. Tohle zasáhne normálního člověka. Já žiju na okraji společnosti, takže se o sebe tolik nebojím, ale ostatní by možná měli.
+Velké občanské nepokoje, nezaměstnanost následovaná vysokou inflací a poklesem HDP. Tohle zasáhne normálního člověka. Já žiju na okraji společnosti, takže se o sebe tolik nebojím, ale ostatní by mohli.
