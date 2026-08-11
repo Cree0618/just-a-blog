@@ -1,5 +1,5 @@
 ---
-date: 2026-08-12
+date: 2026-08-11
 title: "Making DeepSeek V4 Flash Feel Local"
 description: "What I learned serving DeepSeek V4 Flash on one Modal B300: benchmark bugs, long-context limits, real agent traffic, and the economics of self-hosting."
 tags:
