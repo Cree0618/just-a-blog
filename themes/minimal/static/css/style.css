@@ -230,8 +230,10 @@ ol li::marker {
 }
 
 .content code {
+  color: #181a1b;
   background: #f4f4f4;
   padding: 0.2rem 0.4rem;
+  border-radius: 3px;
   font-size: 0.9em;
 }
 
