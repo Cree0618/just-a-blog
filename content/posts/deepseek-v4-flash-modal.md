@@ -37,9 +37,9 @@ The hardware and software stack is:
 - one NVIDIA B300 with 288 GB of HBM3e;
 - DeepSeek V4 Flash 0731, with roughly 284B total parameters and around 13B active parameters per token;
 - vLLM `0.25.1`;
-- native FP4 weights on the Blackwell fast path;
+- the native FP4 MoE expert path, with mixed FP8 components, on the Blackwell fast path;
 - the checkpoint's fused DSpark speculative-decoding module;
-- prefix caching, FP8 KV cache, CUDA graphs, and chunked prefill.
+- prefix caching, FP8 KV cache, CUDA graphs, and chunked prefill (reported in the run notes; not independently recorded in every external JSON artifact).
 
 The speed comes from the combination, not from one magic flag. FP4 reduces the weight traffic. DSpark proposes several tokens for the target model to verify in one pass. The serving configuration tries to keep the GPU busy while requests arrive with very different prompt lengths.
 
@@ -54,8 +54,8 @@ The 164K-token smoke test passed the useful checks:
 - the container saw a B300;
 - vLLM used the FP4 path rather than a BF16 or Marlin fallback;
 - a prompt of 161,870 tokens was accepted;
-- prefix-cache hit rate was 99.8% in the synthetic shared-prefix setup;
-- DSpark had an acceptance length of 7.0 on the tiny sample.
+- token-level prompt-cache hit rate was 99.8% in the synthetic shared-prefix setup;
+- the tiny sample's mean DSpark accepted length was 7.0 (this metric includes the target token).
 
 But the request stopped after only 21 output tokens. Its apparent decode rate was therefore meaningless. It proved that the model loaded and the prompt fit. It did not prove sustained throughput.
 
@@ -86,15 +86,15 @@ After fixing the client, I ran a fixed-output benchmark with 589 generated token
 
 \* These are derived capacity figures for a particular trace-shaped workload, assuming 82.6 steps per session and 589 output tokens per step. They are planning numbers, not a 52-user production replay.
 
-The important pattern is not simply that throughput falls as prompts get longer. It is *why* it falls. At 164K and beyond, long-context request work dominates the step. TTFT grows dramatically while the decode portion degrades much less. A short-context decode benchmark can therefore make the machine look much stronger than it feels to an agent waiting for its next tool call.
+The important pattern is not simply that throughput falls as prompts get longer. It is *why* it falls. In the measured 15K-to-164K decomposition, TTFT grows 10.4× while the decode rate falls about 30%. At 300K and 512K, long-context request work still dominates, but the saved artifacts do not isolate the individual cache, prefill, and decode phases. A short-context decode benchmark can therefore make the machine look much stronger than it feels to an agent waiting for its next tool call.
 
-Concurrency also changes with context. Sixteen concurrent requests was the clean peak around 15K–64K. At 164K and beyond, 24-way batches were better in this synthetic test. More concurrency is not automatically better, though: at some point it becomes queueing rather than useful parallelism.
+Concurrency also changes with context. Sixteen concurrent requests was the clean peak around 15K–64K. At 164K and beyond, 24-way batches produced the best aggregate throughput in this synthetic test, but not necessarily the best latency. More concurrency is not automatically better, though: at some point it becomes queueing rather than useful parallelism.
 
 A separate 768K smoke test accepted a 762,639-token prompt. That is a useful prompt-fit result. It is not a claim that one B300 can sustain a productive 768K workload; the request generated only 16 output tokens.
 
 ## Synthetic traffic and real agents tell different stories
 
-The fixed-output test intentionally repeats a shared scaffold. That gives it almost perfect prefix reuse, which is useful for isolating a serving path but unlike a group of agents whose contexts grow independently.
+The fixed-output test intentionally repeats a shared scaffold. That gives it roughly 99% token-level prompt-cache hits, which is useful for isolating a serving path but unlike a group of agents whose contexts grow independently.
 
 The next step was real tool-shaped traffic: agents reading files, writing files, searching code, and running commands in synthetic repositories. At 64K context, the best saved burst reached 2.71 successful requests per second at 16 agents. Increasing the burst to 20 agents collapsed to 0.54 requests per second, with most work queued behind only a couple of active prefills.
 
@@ -106,12 +106,12 @@ The full-session test was more revealing:
 - 170 successful requests and 6 errors;
 - 3.4% request error rate;
 - median prompt size around 71K tokens;
-- 62.4% speculative-decoding acceptance;
+- 62.4% draft-token acceptance, with a mean DSpark accepted length of 5.37;
 - 46.5% token-level cache hit rate.
 
 The middle of the session reached 27–28 seconds of median TTFT when all 16 agents were active. Later turns became faster as agents finished and concurrency fell.
 
-That is the difference between a benchmark and an application. The synthetic benchmark reported roughly 99% prefix reuse. The growing multi-agent session reported 46.5%. The server still worked, but cache pressure, queueing, and different conversation lengths changed the operating point completely.
+That is the difference between a benchmark and an application. The synthetic benchmark reported roughly 99% token-level prompt-cache hits. The growing multi-agent session reported 46.5%. The server still worked, but cache pressure, queueing, and different conversation lengths changed the operating point completely.
 
 The session was still a successful proof of concept. It was not a polished production service: it had a small error rate, long mid-session waits, and incomplete per-agent capacity curves. Those limitations are part of the result.
 
@@ -123,7 +123,7 @@ The experiments became progressively less synthetic. Each tool exposed a differe
 
 I then ran the endpoint through OpenCode-style coding sessions with real tools and `thinking` enabled at the high setting. The experiment used one, four, and eight concurrent agents, a 393K context limit, and a warm-up before each lane.
 
-The eight-agent lane took about 205 seconds. The agents did actual work rather than emitting fixed-length text: they inspected a generated repository, edited files, ran tests, and reviewed the result. One representative audit examined 48 modules containing 10,560 handlers, ran `pytest` successfully, and found no functional anomalies. It also exposed a more realistic engineering problem: the workspace had only one test, covering roughly 0.009% of the generated handlers.
+The eight-agent lane took about 205 seconds. The agents did actual work rather than emitting fixed-length text: they inspected a generated repository, edited files, ran tests, and reviewed the result. A separate per-agent audit artifact from that run examined 48 modules containing 10,560 handlers, ran `pytest` successfully, and found no functional anomalies. It also exposed a more realistic engineering problem: the workspace had only one test, covering roughly 0.009% of the generated handlers.
 
 At eight agents, first reasoning/tool events arrived roughly 30–37 seconds into the requests. The measured lane was about 95% cached by token count. Using the Baseten rate card, its full-wall accounting was approximately $0.404 of GPU cost versus $0.228 of API-equivalent cost, or 1.77× more expensive. At an assumed 60% inference utilization it approached parity, but that assumption is exactly the sort of thing that needs to be measured rather than quietly inserted into a spreadsheet.
 
@@ -147,7 +147,7 @@ AgentX was the most sobering benchmark. It used an AIPerf AgentX scenario backed
 | Request throughput | 0.235 req/s |
 | Prompt tokens | 21.57M |
 | Cached prompt tokens | 19.32M (89.56%) |
-| Speculative acceptance | 65.61% / DSpark accepted length 4.59 |
+| Speculative acceptance | 65.61% draft-token acceptance; mean DSpark accepted length 4.59 |
 | TTFT P50 / P90 | 1.23 s / 3.32 s |
 | Failed turns | 0 |
 
@@ -169,7 +169,7 @@ The latest configuration work includes:
 - persisting FlashInfer autotuning results and TileLang/FlashInfer JIT artifacts across cold starts;
 - raising GPU memory utilization from 0.92 to 0.95, with an explicit OOM check still required;
 - keeping prefix caching and chunked prefill enabled for long agent turns;
-- making greedy sampling the default for this agent-oriented deployment, which improves determinism and usually helps draft/target agreement;
+- making greedy sampling the default for this agent-oriented deployment, intended to improve determinism and draft/target agreement; that effect has not been isolated in a matched A/B test;
 - recording actual in-flight request counts, prompt-token counts, cache counters, failures, and Prometheus counter resets.
 
 These changes are hypotheses until the post-change A/B runs are complete. A configuration change is not a measurement.
@@ -180,18 +180,18 @@ There is also an adaptive DSpark source-build arm based on an open vLLM implemen
 
 At first, it was tempting to say that one B300 was simply cheaper than an API. That statement was too broad.
 
-There are also two different API price cards involved, and mixing them produces very convincing but invalid spreadsheets:
+There are also two different API price cards involved, and mixing them produces very convincing but invalid spreadsheets. The table below records the historical rates used in the August 6 analysis; the official tier was flagged for a significant price increase on August 6.
 
 | Product | Input | Cached input | Output |
 | --- | ---: | ---: | ---: |
-| Baseten DeepSeek V4 Flash | $0.13/M | $0.028/M | $0.26/M |
-| Official DeepSeek API | $0.14/M | $0.0028/M | $0.28/M |
+| Baseten DeepSeek-V4-Flash-0731 | $0.13/M | $0.028/M | $0.26/M |
+| Official DeepSeek API, historical 2026-08-06 rate card | $0.14/M | $0.0028/M | $0.28/M |
 
-These are different products. The [official DeepSeek pricing page](https://api-docs.deepseek.com/quick_start/pricing/) should be checked before making a current comparison.
+These are different products. Check the [official DeepSeek pricing page](https://api-docs.deepseek.com/quick_start/pricing/) before making a current comparison.
 
-Using the official-API rate card in the August 6 analysis, the synthetic shared-prefix runs gave these self-hosted/API ratios:
+Using the historical 2026-08-06 official-API rate card, the synthetic shared-prefix runs gave these self-hosted/API ratios:
 
-| Context | Self-hosted / API |
+| Context — historical 2026-08-06 official-price comparison | Self-hosted / API |
 | ---: | ---: |
 | 15K | 0.53× |
 | 32K | 0.55× |
