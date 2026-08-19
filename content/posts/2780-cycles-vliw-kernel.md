@@ -1,5 +1,5 @@
 ---
-date: 2026-08-19
+date: 2026-01-21
 title: "Scheduling a gather-bound kernel on a VLIW+SIMD machine"
 description: "VLIW packing, software pipelining, and a 31-node scratch cache on Anthropic’s take-home. Measured 147,734 → 2,780 cycles. Still slower than every published Claude bar."
 tags:

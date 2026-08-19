@@ -1,5 +1,5 @@
 ---
-date: 2026-08-19
+date: 2026-02-11
 title: "Search-mode tracking when most observations are negatives"
 description: "Multi-camera association for Prague’s parking-validation cars: travel-time gates, CLIP in a subprocess, 11,180 crops, and no mAP. The failure mode is a confident false track."
 tags:

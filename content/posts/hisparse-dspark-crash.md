@@ -1,5 +1,5 @@
 ---
-date: 2026-08-19
+date: 2026-08-14
 title: "Composing speculative decode with hierarchical sparse attention"
 description: "SGLang HiSparse plus DSpark on a B300: 1,055 seconds to uvicorn, a null spec_info, $2.35 billed. Gate 3 then failed on 147k+1024 > 147456. Not a speedup claim."
 tags:

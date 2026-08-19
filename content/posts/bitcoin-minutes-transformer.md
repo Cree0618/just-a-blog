@@ -1,5 +1,5 @@
 ---
-date: 2026-08-19
+date: 2026-01-31
 title: "When a trading metric measures the base rate"
 description: "A nanochat-style GPT on 7.4 million Bitcoin minutes. Val directional accuracy 56.6%. Zero trades. A Sharpe of 23.9 that is always-down annualized at 525,600 periods per year."
 tags:

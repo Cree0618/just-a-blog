@@ -1,5 +1,5 @@
 ---
-date: 2026-08-19
+date: 2026-04-12
 title: "The product layer between a roof model and a Czech bill"
 description: "Google Solar API, a 6-decimal cache, GeoTIFF archives, a self-sufficiency heuristic, and NZÚ math that had to be deleted when the household program stopped."
 tags:

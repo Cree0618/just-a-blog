@@ -1,5 +1,5 @@
 ---
-date: 2026-08-19
+date: 2026-07-26
 title: "A metro map for what the agent actually did"
 description: "Codex rollouts are JSONL. Agent Run Map compresses them into a transit map: spine, subagents, failures, and the files left on disk. Local-first, macOS, no LLM in the graph."
 tags:
