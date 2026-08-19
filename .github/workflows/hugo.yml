@@ -40,9 +40,10 @@ jobs:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
           HUGO_ENVIRONMENT: production
         run: |
-          hugo \
-            --minify \
-            --baseURL "${{ steps.pages.outputs.base_url }}/"
+          # Use the custom domain from hugo.toml. GitHub's project base_url is
+          # https://cree0618.github.io/just-a-blog, which prefixes every asset
+          # as /just-a-blog/images/... and 404s on blog.theworldmessage.com.
+          hugo --minify
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

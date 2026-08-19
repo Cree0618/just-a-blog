@@ -24,6 +24,9 @@ defaultContentLanguageInSubdir = false
 [permalinks]
   posts = '/posts/:slug/'
 
+# Keep static assets on the custom domain even if a build sets another baseURL.
+canonifyURLs = true
+
 [markup]
   [markup.highlight]
     style = 'monokailight'
