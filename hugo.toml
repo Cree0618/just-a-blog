@@ -3,6 +3,7 @@ title = 'writing just for the sake of it'
 theme = 'minimal'
 defaultContentLanguage = 'en'
 defaultContentLanguageInSubdir = false
+canonifyURLs = true
 
 [languages]
   [languages.en]
@@ -23,9 +24,6 @@ defaultContentLanguageInSubdir = false
 
 [permalinks]
   posts = '/posts/:slug/'
-
-# Keep static assets on the custom domain even if a build sets another baseURL.
-canonifyURLs = true
 
 [markup]
   [markup.highlight]
