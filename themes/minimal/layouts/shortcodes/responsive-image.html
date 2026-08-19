@@ -1,7 +1,4 @@
-{{- $src := .Get "src" -}}
-{{- if not (hasPrefix $src "/") -}}
-  {{- $src = printf "/%s" $src -}}
-{{- end -}}
+{{- $src := strings.TrimPrefix "/" (.Get "src") -}}
 {{- $alt := .Get "alt" | default "" -}}
 {{- $maxWidth := .Get "maxWidth" | default "100%" -}}
 <img src="{{ $src | absURL }}" alt="{{ $alt }}" style="max-width: {{ $maxWidth }}; width: 100%;">
