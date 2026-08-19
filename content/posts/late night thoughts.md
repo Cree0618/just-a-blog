@@ -1,6 +1,7 @@
 ---
 title: late night thoughts
 date: 2026-06-24
+draft: true
 ---
 
 I feel like I have no authority to write about anything.  
