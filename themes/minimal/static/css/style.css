@@ -230,22 +230,26 @@ ol li::marker {
 }
 
 .content code {
-  color: #181a1b;
-  background: #f4f4f4;
+  color: #f7cd72b9;
+  background: #2a241b;
   padding: 0.2rem 0.4rem;
   border-radius: 3px;
   font-size: 0.9em;
 }
 
-.content pre {
-  background: #f4f4f4;
+.content pre,
+.content .highlight pre {
+  color: #f7cd72b9 !important;
+  background: #2a241b !important;
   padding: 1rem;
   overflow-x: auto;
   margin-bottom: 1rem;
 }
 
-.content pre code {
-  background: none;
+.content pre code,
+.content .highlight pre code {
+  color: inherit;
+  background: none !important;
   padding: 0;
 }
 

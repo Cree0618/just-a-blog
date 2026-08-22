@@ -27,7 +27,7 @@ canonifyURLs = true
 
 [markup]
   [markup.highlight]
-    style = 'monokailight'
+    style = 'monokai'
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
