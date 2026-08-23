@@ -10,11 +10,11 @@ tags:
   - visualization
 ---
 
-A coding agent’s rollout is a transcript. Hundreds of tool calls, nested subagents, patches, tests, and a user turn every so often. The useful question is not “what did the model say.” It is “what was the execution.” That is a graph problem: a spine of intent, branches of work, and evidence that stays on disk until you ask for it.
+A coding agent’s rollout is a transcript. Hundreds of tool calls, nested subagents, patches, tests, and a user turn every so often. The question that matters is “what was the execution” ahead of “what did the model say.” That is a graph problem: a spine of intent, branches of work, and evidence that stays on disk until you ask for it.
 
 Agent Run Map is a local-first macOS menu-bar app that turns Codex `rollout-*.jsonl` files under `~/.codex/sessions` into that graph, then draws it as a metro map. The repository is [`Cree0618/agent-run-map`](https://github.com/Cree0618/agent-run-map). Status is `0.1.0` source-beta: usable from `./scripts/build_and_run.sh`, no signed/notarized binary, MIT license.
 
-I did not write Codex. OpenAI did. The rollout format is an evolving implementation detail, reverse-engineered here, not a stable public contract. This post is about the viewer and the parser in front of it.
+Codex itself is OpenAI’s work. The rollout format is an evolving implementation detail that I reverse-engineered; nobody should treat it as a stable public contract. This post is about the viewer and the parser in front of it.
 
 This post focuses on that compression and the native UI. Claude Code logs, a Swift rewrite of the parser, and a Mac App Store build are related and out of scope. The schema document still says “Claude deferred.” There is no Swift unit-test target yet.
 
@@ -38,8 +38,8 @@ Six design principles, written before the SwiftUI window:
 1. **Deterministic first.** v1 uses no LLM. Same file → same graph.
 2. **Compress aggressively.** Target ≤ 40 visible nodes for a multi-hour session, not hundreds of tool calls.
 3. **Prefer author intent.** `update_plan` is the best free spine; otherwise user turns.
-4. **True branches only when explicit.** `spawn_agent` / child rollouts are tree edges. Heuristic “the agent changed strategy” is a badge, not topology.
-5. **Store refs, not blobs.** Nodes point at source events. Full tool output stays on disk until the inspector.
+4. **True branches only when explicit.** `spawn_agent` / child rollouts are tree edges. Heuristic “the agent changed strategy” stays a badge; only explicit spawn events create topology.
+5. **Store refs.** Nodes point at source events. Full tool output stays on disk until the inspector.
 6. **Fail soft.** Unknown tools and compaction gaps become warnings. They do not crash the parse.
 
 The current Python/Swift payload is a reduced form of that contract (`spine` plus node fields). Explicit edges, warning lists, and some event IDs are still target, not all emitted.
@@ -68,13 +68,13 @@ def compress_window(events, start, end, parent_id, id_prefix, *, turn_id=None):
     # returns (top_level children of the turn, nested nodes under a cluster cap)
 ```
 
-The ≤40-node target is a design goal in the schema, not a measured average over my personal sessions. I will not invent a compression ratio. The point of the cap is scannability. A metro map that still has 400 stations is a log.
+The ≤40-node target comes from the schema as a design goal; I have never measured how it averages out on my personal sessions, and I will not invent a compression ratio. The point of the cap is scannability. A metro map that still has 400 stations is a log.
 
 Plan steps are the spine when Codex emits `update_plan`. Titles get rewritten mid-run; the parser aliases later wording onto the fullest spine snapshot so tools stay attached to the station that announced the work. Tests exist specifically for “rewritten plan titles still attach tools” and “unrelated rewrites do not false-alias.”
 
 ### Pattern 2: Draw a transit map, not a node-link blob
 
-The default center view is `MetroMapView`. Layout is a **strict column grid**, not force-directed scatter:
+The default center view is `MetroMapView`. Layout is a **strict column grid** in place of force-directed scatter:
 
 | Column | X | What goes there |
 |---|---:|---|
@@ -84,7 +84,7 @@ The default center view is `MetroMapView`. Layout is a **strict column grid**, n
 
 All circles on a side share an X. Branch Y is centered on the parent with 72 pt spacing. Routes are orthogonal T-junctions only. Minimum gap on the spine is 160 pt. Time-scaled layout (on by default) adds 0.35 px per second of wall time, capped at 420, so a ten-minute stall is visible without exploding the canvas. Canvas width is 1,100. At most three activity stations per spine node per side; the rest cluster.
 
-Station language is transit, not UML:
+The station language borrows from transit maps instead of UML:
 
 - hollow station — ordinary turn
 - double-ring — evidence-backed pivot (recovered from failure, spawned subagents, explicit reversal)
@@ -146,7 +146,7 @@ A viewer that cannot resume the run is a museum. From the map header, inspector,
 | Copy station handoff | Scoped Markdown: prefix of the spine + focus evidence |
 | Reveal rollout | Selects the JSONL in Finder |
 
-Subagent stations target the **child** session id. Forks change conversation history only. The working tree is not rewound. That sentence is in the macOS README because it is the kind of thing people get wrong.
+Subagent stations target the **child** session id. Forks change conversation history only; the working tree stays untouched. That sentence is in the macOS README because it is the kind of thing people get wrong.
 
 Terminal discovery: UserDefaults → `CODEX_CLI` → known install locations (`~/.local/bin`, npm/nvm/fnm/volta, Homebrew) → login-shell `command -v` → bare `codex`. Automatic mode uses Kitty if it is running, otherwise Terminal.app. Kitty launches Codex directly. Terminal.app uses a private temporary `.command` that closes on success and stays open on failure.
 
@@ -158,17 +158,17 @@ codex exec -m gpt-5.4-mini --ephemeral --output-schema … -o titles.json - < pr
 
 Same ChatGPT/Codex login as `codex login`. No extra API key. The subprocess starts in an isolated temp directory, ignores user config, disables local/web tools, uses low reasoning, and reads the prompt on stdin. Payload is sanitized station labels, kind/status, tool counts, and file basenames. Commands, summaries, session IDs, full paths, and tool I/O stay local. Cache: `~/Library/Application Support/AgentRunMap/title-cache/<session_id>.json`. Unchanged stations are not resent.
 
-## What this is not
+## Known limits
 
-It is not a signed product. Source builds use the placeholder icon. Do not redistribute a locally built `.app` as an official binary.
+Source builds are unsigned and use the placeholder icon, so don’t redistribute a locally built `.app` as an official binary.
 
-It is not sandboxed. That is a privacy tradeoff, not an oversight. Resume and Fork launch an external process after an explicit click.
+The app is intentionally unsandboxed: Resume and Fork launch an external process after an explicit click, and reading `~/.codex` is the price of that feature. Come in knowing that.
 
-It is not a complete log. Tool I/O is capped for display and not automatically secret-redacted. Compaction seams are markers. Hidden reasoning is excluded from Markdown on purpose.
+The map shows a capped slice of reality. Tool I/O is truncated for display, secret redaction never happens automatically, compaction seams appear as markers, and hidden reasoning stays out of Markdown exports on purpose.
 
-It is not multi-harness. Codex only. Session discovery covers active `~/.codex/sessions`, not every archived or remote source. New Codex versions may need adapters; the tests are synthetic JSONL, not a vendor compatibility suite.
+And it speaks Codex only, for now: session discovery covers active `~/.codex/sessions` while archived and remote sources wait. New Codex versions may need adapters, and the tests run on synthetic JSONL rather than a vendor compatibility suite.
 
-The SwiftUI surface is large (`RunMapView.swift` is about 3,000 lines; `MetroMapView.swift` about 670). Graph compression stays in Python until the UI settles. Porting the parser into Swift is an option in the macOS README, not done.
+The SwiftUI surface is large (`RunMapView.swift` is about 3,000 lines; `MetroMapView.swift` about 670). Graph compression stays in Python until the UI settles. Porting the parser into Swift is sketched as an option in the macOS README and hasn’t happened yet.
 
 ## Implications
 
@@ -176,6 +176,6 @@ Agent traces are closer to distributed traces than to chat. The right UI is a ma
 
 The interesting layer is the contract between parser and view. Deterministic compression, explicit topology, refs instead of blobs. An LLM can rename stations later. It should not be what decides whether two plan titles are the same node.
 
-If I picked this up again, the missing pieces are the ones the beta notes already list: a Swift test target, a signed build, redaction, Claude (or a second adapter), archived sessions. The next useful visual is probably not a prettier map. It is a measured statement of how often the ≤40-node budget holds on real multi-hour rollouts — with those rollouts redacted.
+If I picked this up again, the missing pieces are the ones the beta notes already list: a Swift test target, a signed build, redaction, Claude (or a second adapter), archived sessions. A prettier map can wait; the next useful thing is a measured statement of how often the ≤40-node budget holds on real multi-hour rollouts — with those rollouts redacted.
 
 Until then the honest demo is: open the menu bar, pick a session you own, and watch the agent’s last hour become a line with a few branches. That is the point of the thing.

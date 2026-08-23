@@ -9,9 +9,9 @@ tags:
   - Anthropic
 ---
 
-Very long instruction word (VLIW) machines date back to Fisher (1983): instead of hardware discovering instruction-level parallelism at runtime, the compiler packs independent operations into one bundle that issues in a single cycle. SIMD is the complementary idea that one packed op should also span several data lanes. The two together are a compiler problem more than a programming problem. The schedule *is* the program.
+My scheduled kernel runs the standard test in **2,780 cycles**, down from the scalar starter’s 147,734 — 53× faster, and still slower than every published Claude bar. This post is about how that number moved, and why it stopped moving where it did.
 
-Anthropic’s original performance take-home is a small instance of that problem. The ISA, the simulator, the hash, and the published bars are Anthropic’s (copyright Anthropic PBC). This post is about the kernel I scheduled on top of that machine: `KernelBuilder.build_kernel` in `perf_takehome.py`. It is not a claim that I designed VLIW, and it is not a full solution dump — the starter asks people not to republish one.
+The machine is Anthropic’s original performance take-home: a simulated VLIW+SIMD processor. Very long instruction word (VLIW) machines date back to Fisher (1983): instead of hardware discovering instruction-level parallelism at runtime, the compiler packs independent operations into one bundle that issues in a single cycle, and SIMD stretches each packed op across several data lanes. The two together make this a compiler problem more than a programming problem. The schedule *is* the program. The ISA, the simulator, the hash, and the published bars are Anthropic’s (copyright Anthropic PBC); my work is the kernel scheduled on top of that machine, `KernelBuilder.build_kernel` in `perf_takehome.py`. What follows is patterns and measurements rather than a solution dump — the starter asks people to keep those private.
 
 The workload is a batched walk down an implicit binary tree. Each of 256 elements starts at index 0. For 16 rounds it loads a node value, mixes `val ^ node_val` through a six-stage 32-bit hash, then steps left or right according to hash parity:
 
@@ -23,8 +23,6 @@ idx = 0 if idx >= n_nodes else idx
 ```
 
 Score is the cycle counter on a frozen copy of the simulator, standard case `forest_height=10` (2,047 nodes), `rounds=16`, `batch_size=256`.
-
-This post focuses on the scheduling patterns that moved that number, and on the bound that did not move. Related work on out-of-order cores, auto-vectorization, and GPU kernel autotuning is in the same family and is not the subject here.
 
 ## The machine
 
@@ -38,7 +36,7 @@ One cycle can fill 12 scalar ALU slots, 6 vector ALU slots (`VLEN = 8`), 2 loads
 Three rules decide what a schedule is allowed to look like.
 
 1. **Write visibility.** Results appear at the end of the cycle. A value cannot be consumed in the bundle that produces it. Same-cycle RAW is illegal.
-2. **Scratch is the register file.** 1,536 words, no indirect indexing. A “cache lookup by idx” is a mux, not a load.
+2. **Scratch is the register file.** 1,536 words, no indirect indexing, so a “cache lookup by idx” resolves through a mux rather than a real load.
 3. **`vload` / `vstore` are contiguous.** A gather of eight lanes is eight scalar `load_offset` ops.
 
 The last rule is the bottleneck. 256 elements × 16 rounds is 4,096 node values. Two scalar loads per cycle means **2,048 cycles** if every node comes from memory and the load unit never idles. SIMD does not raise that cap. I mention the 2,048-cycle number explicitly because it is the ISA, not an estimate, and because several later ideas (deeper muxes, fancier packers) cannot beat it without deleting loads.
@@ -56,7 +54,7 @@ python3 -c "from origianperf_takehome import do_kernel_test; do_kernel_test(10,1
 # CYCLES:  147734
 ```
 
-The first structural change is not a better packer. It is to treat `idx`/`val` as 32 vectors of length 8, `vload` them once, run all 16 rounds in scratch, and `vstore` once. `learning_trace_optimization.md` records that step as **13,903 → 12,463**. I did not reconstruct those two snapshots; the pair is from the notes. The same notes give utilization for *that* trace (load ~16.9%, VALU ~17.1%). Those percentages do not describe the 2,780-cycle program.
+The first structural change has packing nowhere in it: treat `idx`/`val` as 32 vectors of length 8, `vload` them once, run all 16 rounds in scratch, and `vstore` once. `learning_trace_optimization.md` records that step as **13,903 → 12,463**. I did not reconstruct those two snapshots; the pair is from the notes. The same notes give utilization for *that* trace (load ~16.9%, VALU ~17.1%). Those percentages do not describe the 2,780-cycle program.
 
 After load-once, almost every remaining memory op is a gather. The inputs are contiguous. The tree walk is not.
 
@@ -91,7 +89,7 @@ if op1 == "+" and op2 == "+" and op3 == "<<":
     body.append(("valu", ("multiply_add", val_vecs[vi], val_vecs[vi], c_mult, c_add)))
 ```
 
-`multiply_add` is not a hash instruction. Three stages of `myhash` happen to be one fused multiply-add each. Algebra on the ISA is real work; naming it “an intrinsic” would overclaim.
+`multiply_add` exists for ordinary arithmetic; three stages of `myhash` happen to be one fused multiply-add each. Algebra on the ISA is real work; naming it “an intrinsic” would overclaim.
 
 ### Pattern 4: Pack two queues, pipeline across batches
 
@@ -105,7 +103,7 @@ active_batches.append((vi_batch, 0))
 self.instrs.extend(self._pack_mixed_lookahead(mixed_ops, lookahead=32))
 ```
 
-The key design choice is correctness-before-overlap. Hashing a gather that has not finished is a silent wrong answer. `do_kernel_test` compares memory against `reference_kernel2` at each pause; a packer bug is an assert, not a better score. `compute_burst = 1` is what the tree runs, not a claim that 1 is optimal. Commit `55d5723` tried a more aggressive interleave; both versions measure 2,780.
+The key design choice is correctness-before-overlap. Hashing a gather that has not finished is a silent wrong answer. `do_kernel_test` compares memory against `reference_kernel2` at each pause; a packer bug is an assert, not a better score. `compute_burst = 1` is what the tree runs; whether 1 is optimal, nobody has shown. Commit `55d5723` tried a more aggressive interleave; both versions measure 2,780.
 
 {{< responsive-image src="images/vliw-entropy-horizon.png" alt="Entropy horizon: early rounds from scratch, later rounds as gathers" maxWidth="720px" >}}
 
@@ -125,7 +123,7 @@ After `build_kernel` for the standard test, the file produces **2,780 bundles**,
 | Bundles with load and VALU | 1,093 | overlap |
 | Scratch used | 1,364 / 1,536 | deep windows hit this first |
 
-The gather traffic is packed. The hole is the other 988 cycles: setup, the round 0–1 mux and hash, pipeline fill/drain, stores, and hash that did not sit on a gather. That is the shape of 2,780. It is not the shape of 1,487.
+The gather traffic is packed. The hole is the other 988 cycles: setup, the round 0–1 mux and hash, pipeline fill/drain, stores, and hash that did not sit on a gather. That is the shape of 2,780; reaching 1,487 will take a different shape.
 
 Re-measured 2026-08-19, all three kernels matched `reference_kernel2`:
 
@@ -153,17 +151,17 @@ Official bars from `Readme.md` / `tests/submission_tests.py`. None of these are 
 | 1,487 | Opus 4.5, 11.5 hours. Email if below this |
 | 1,363 | Opus 4.5, improved harness |
 
-2,780 is about 1.28× the first Claude bar and about 2× the best published harness. 53× the starter is the wrong comparison. Claude is the actual bar.
+2,780 is about 1.28× the first Claude bar and about 2× the best published harness. The starter comparison flatters; Claude is the bar that counts.
 
 Git has `117f69c Revert depth-6 ALU lookup`. I do not have a clean cycle number for that kernel and I am not going to invent one.
 
-## What this is not
+## What this cannot tell you
 
-It is not a demonstration that the kernel is close to the machine’s limit. Dual-issuing every `load_offset` is necessary and not sufficient; 862 bundles still have no load.
+Whether the kernel sits near the machine’s limit: dual-issuing every `load_offset` proved necessary and insufficient, and 862 bundles still carry no load.
 
-It is not evidence that the architecture note was the right program. The note’s 0–4 cache, implemented more faithfully, lost to a shallower cache plus a packer.
+Whether the architecture note was the right program: its 0–4 cache, implemented more faithfully, lost to a shallower cache plus a packer.
 
-It is not a Perfetto analysis of the 2,780 kernel. I counted bundles. I did not re-open the trace.
+And what the 2,780 kernel really does cycle to cycle: I counted bundles, and the Perfetto trace stayed closed.
 
 The last edit to `perf_takehome.py` is dated 2026-01-30. If I picked this up again I would not start by chasing ~1,498. I would start by filling some of the 862 empty load bundles, or deleting the work that created them.
 

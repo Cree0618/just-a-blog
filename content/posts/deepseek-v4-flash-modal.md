@@ -14,11 +14,11 @@ I started this project with a fairly simple question:
 
 > Can one rented GPU make a 284-billion-parameter model feel like a local model for coding agents?
 
-Not a toy demo. I wanted a real OpenAI-compatible endpoint, long contexts, tool calls, concurrency, and enough measurements to decide whether self-hosting made economic sense.
+No toy demo: I wanted a real OpenAI-compatible endpoint, long contexts, tool calls, concurrency, and enough measurements to decide whether self-hosting made economic sense.
 
 The short answer is **yes, technically**. One NVIDIA B300 can serve DeepSeek V4 Flash 0731, including very long prompts. The more interesting answer is that the economics are conditional. Context length, cache behavior, concurrency, cold starts, and output rate matter more than a single impressive tokens-per-second number.
 
-This is a progress report from the experiments, not a leaderboard result. The data comes from warm Modal runs on one B300. Some conclusions are measured; others remain explicitly unproven.
+This is a progress report from the experiments rather than a leaderboard result. The data comes from warm Modal runs on one B300. Some conclusions are measured; others remain explicitly unproven.
 
 ## The deployment
 
@@ -41,13 +41,13 @@ The hardware and software stack is:
 - the checkpoint's fused DSpark speculative-decoding module;
 - prefix caching, FP8 KV cache, CUDA graphs, and chunked prefill (reported in the run notes; not independently recorded in every external JSON artifact).
 
-The speed comes from the combination, not from one magic flag. FP4 reduces the weight traffic. DSpark proposes several tokens for the target model to verify in one pass. The serving configuration tries to keep the GPU busy while requests arrive with very different prompt lengths.
+The speed comes from combining all of the above. FP4 reduces the weight traffic. DSpark proposes several tokens for the target model to verify in one pass. The serving configuration tries to keep the GPU busy while requests arrive with very different prompt lengths.
 
 The deployment recipe follows [vLLM's DeepSeek V4 recipe](https://recipes.vllm.ai/deepseek-ai/DeepSeek-V4-Flash) and the [official Modal GPU documentation](https://modal.com/docs/guide/gpu). The implementation and raw reports are in the [project repository](https://github.com/Cree0618/deepseek-v4-flash-modal).
 
-## The first successful boot was not a benchmark
+## What the first successful boot actually proved
 
-The first important result was not a speed number. It was proving that the intended path was actually running.
+The first important result had nothing to do with speed: proving that the intended path was actually running.
 
 The 164K-token smoke test passed the useful checks:
 
@@ -57,7 +57,7 @@ The 164K-token smoke test passed the useful checks:
 - token-level prompt-cache hit rate was 99.8% in the synthetic shared-prefix setup;
 - the tiny sample's mean DSpark accepted length was 7.0 (this metric includes the target token).
 
-But the request stopped after only 21 output tokens. Its apparent decode rate was therefore meaningless. It proved that the model loaded and the prompt fit. It did not prove sustained throughput.
+But the request stopped after only 21 output tokens, so its apparent decode rate meant nothing — proof that the model loaded and the prompt fit, nothing about sustained throughput.
 
 That distinction became a recurring theme: every number needs a description of exactly what it measured.
 
@@ -73,7 +73,7 @@ This was probably the most valuable optimization in the whole project. It made t
 
 ## The context curve
 
-After fixing the client, I ran a fixed-output benchmark with 589 generated tokens per request. The table below shows the best clean point at each context size. The metric is **aggregate completion tokens divided by batch wall time**. It includes prompt work, cache work, TTFT, and scheduling; it is not pure decode speed.
+After fixing the client, I ran a fixed-output benchmark with 589 generated tokens per request. The table below shows the best clean point at each context size. The metric is **aggregate completion tokens divided by batch wall time**. It includes prompt work, cache work, TTFT, and scheduling — end-to-end speed rather than pure decode.
 
 | Context | Best concurrency | Aggregate throughput | Median TTFT | Planning users* |
 | ---: | ---: | ---: | ---: | ---: |
@@ -84,13 +84,13 @@ After fixing the client, I ran a fixed-output benchmark with 589 generated token
 | 300K | 24 | 509 tok/s | 22.0 s | 18.8 |
 | 512K | 24 | 309 tok/s | 37.3 s | 11.4 |
 
-\* These are derived capacity figures for a particular trace-shaped workload, assuming 82.6 steps per session and 589 output tokens per step. They are planning numbers, not a 52-user production replay.
+\* These are derived capacity figures for a particular trace-shaped workload, assuming 82.6 steps per session and 589 output tokens per step. They are planning numbers; no 52-user production replay ever ran.
 
-The important pattern is not simply that throughput falls as prompts get longer. It is *why* it falls. In the measured 15K-to-164K decomposition, TTFT grows 10.4× while the decode rate falls about 30%. At 300K and 512K, long-context request work still dominates, but the saved artifacts do not isolate the individual cache, prefill, and decode phases. A short-context decode benchmark can therefore make the machine look much stronger than it feels to an agent waiting for its next tool call.
+Throughput falling as prompts get longer is the expected part; the interesting pattern is *why* it falls. In the measured 15K-to-164K decomposition, TTFT grows 10.4× while the decode rate falls about 30%. At 300K and 512K, long-context request work still dominates, but the saved artifacts do not isolate the individual cache, prefill, and decode phases. A short-context decode benchmark can therefore make the machine look much stronger than it feels to an agent waiting for its next tool call.
 
-Concurrency also changes with context. Sixteen concurrent requests was the clean peak around 15K–64K. At 164K and beyond, 24-way batches produced the best aggregate throughput in this synthetic test, but not necessarily the best latency. More concurrency is not automatically better, though: at some point it becomes queueing rather than useful parallelism.
+Concurrency also changes with context. Sixteen concurrent requests was the clean peak around 15K–64K. At 164K and beyond, 24-way batches produced the best aggregate throughput in this synthetic test at a real latency cost. Past some point, extra concurrency turns into queueing rather than useful parallelism.
 
-A separate 768K smoke test accepted a 762,639-token prompt. That is a useful prompt-fit result. It is not a claim that one B300 can sustain a productive 768K workload; the request generated only 16 output tokens.
+A separate 768K smoke test accepted a 762,639-token prompt. Useful as a prompt-fit result; with only 16 output tokens generated, it says nothing about sustaining a productive 768K workload.
 
 ## Synthetic traffic and real agents tell different stories
 
@@ -113,7 +113,7 @@ The middle of the session reached 27–28 seconds of median TTFT when all 16 age
 
 That is the difference between a benchmark and an application. The synthetic benchmark reported roughly 99% token-level prompt-cache hits. The growing multi-agent session reported 46.5%. The server still worked, but cache pressure, queueing, and different conversation lengths changed the operating point completely.
 
-The session was still a successful proof of concept. It was not a polished production service: it had a small error rate, long mid-session waits, and incomplete per-agent capacity curves. Those limitations are part of the result.
+The session still counts as a successful proof of concept, warts included: a small error rate, long mid-session waits, and incomplete per-agent capacity curves. Those limitations are part of the result.
 
 ## The workload ladder: OpenCode, mini-SWE, and AgentX
 
@@ -127,7 +127,7 @@ The eight-agent lane took about 205 seconds. The agents did actual work rather t
 
 At eight agents, first reasoning/tool events arrived roughly 30–37 seconds into the requests. The measured lane was about 95% cached by token count. Using the Baseten rate card, its full-wall accounting was approximately $0.404 of GPU cost versus $0.228 of API-equivalent cost, or 1.77× more expensive. At an assumed 60% inference utilization it approached parity, but that assumption is exactly the sort of thing that needs to be measured rather than quietly inserted into a spreadsheet.
 
-This was not an apples-to-apples comparison with the short non-thinking benchmark. It was valuable for a different reason: it measured what a coding CLI experiences when reasoning, tool latency, growing conversations, and inference are all mixed together.
+Compared with the short non-thinking benchmark this was apples-to-oranges — and much more interesting for it: it showed what a coding CLI experiences when reasoning, tool latency, growing conversations, and inference are all mixed together.
 
 ### mini-SWE-agent: closed-loop SWE-bench traffic
 
@@ -157,7 +157,7 @@ The contexts were much heavier than the earlier mini-SWE mix: median 92.5K token
 
 The economic result was a clear stop signal. At the Baseten prices used for this run, the processed work was worth about $3.56 per hour at the API, while the B300 cost $7.10 per hour. Self-hosting was therefore 1.99× the API cost at the useful c16 operating point. The cold start took 10.73 minutes and cost another roughly $1.27. For this workload, one B300 was not viable without a different batching profile, more utilization, cheaper hardware, or a better reason to self-host than token price alone.
 
-That result is not a failure of the deployment. It is a much better answer to the original question. The same GPU is attractive for some fresh-heavy or shorter-context traffic and unattractive for this long, cache-heavy AgentX mix.
+That result doubles as the best answer this project produced, even if it is the answer I was hoping to avoid. The same GPU is attractive for some fresh-heavy or shorter-context traffic and unattractive for this long, cache-heavy AgentX mix.
 
 ## What changed during the optimization work
 
@@ -172,7 +172,7 @@ The latest configuration work includes:
 - making greedy sampling the default for this agent-oriented deployment, intended to improve determinism and draft/target agreement; that effect has not been isolated in a matched A/B test;
 - recording actual in-flight request counts, prompt-token counts, cache counters, failures, and Prometheus counter resets.
 
-These changes are hypotheses until the post-change A/B runs are complete. A configuration change is not a measurement.
+These changes are hypotheses until the post-change A/B runs are complete.
 
 There is also an adaptive DSpark source-build arm based on an open vLLM implementation. It is kept separate from the stable vLLM 0.25.1 arm because source builds are slow and speculative decoding behavior can change under load. The matched adaptive-versus-fixed experiment has not yet produced a result I am willing to publish.
 
@@ -200,7 +200,7 @@ Using the historical 2026-08-06 official-API rate card, the synthetic shared-pre
 | 300K | 1.11× |
 | 512K | 1.42× |
 
-Below 1× is cheaper. These values exclude cold starts, idle windows, failed work, and the operational cost of running the service. They describe one synthetic traffic shape, not a universal break-even point.
+Below 1× is cheaper. These values exclude cold starts, idle windows, failed work, and the operational cost of running the service. They hold for one synthetic traffic shape; there is no universal break-even point.
 
 The full 16-agent session had a different accounting result: about $0.421 of measured GPU cost versus $0.9166 at the official API rate card, or 0.46×. That is encouraging, but it is still one run and does not settle the cost of cold starts or always-on availability.
 
@@ -209,7 +209,7 @@ The later economics audit exposed two mistakes in the earlier reasoning:
 1. I mixed the Baseten and official DeepSeek price tiers.
 2. I treated a very high synthetic cached-token rate as if it were a fresh-prefill ceiling, and effectively treated cached tokens as free GPU work.
 
-They are not free. In a cache-heavy agent workload, the GPU still spends time moving and attending to cached state. The current conclusion is more nuanced: fresh-heavy traffic can be a good fit for self-hosting; cache-heavy traffic can be close to parity or worse, especially against an API with very cheap cache reads. Actual billed wall time matters more than a throughput-only estimate.
+Cached work still costs the GPU real time: in a cache-heavy workload it keeps moving and attending to cached state. The current conclusion is more nuanced: fresh-heavy traffic can be a good fit for self-hosting; cache-heavy traffic can be close to parity or worse, especially against an API with very cheap cache reads. Actual billed wall time matters more than a throughput-only estimate.
 
 ## What we know, and what we do not
 
@@ -243,7 +243,7 @@ The next experiments are less glamorous than the first deployment, but more deci
 
 The biggest lesson is that deploying a large model is only the beginning. The first benchmark asks, “How many tokens per second can this GPU produce?” The useful benchmark asks, “How long does an agent wait, how many agents can share the GPU, what happens when their contexts grow, and what does the bill look like at the end?”
 
-One B300 is surprisingly capable. It is not a magical replacement for an API, but with the right context budget and traffic shape it can make a very large open model feel local—and give you much better visibility into where the performance and money actually go.
+One B300 is surprisingly capable. It won’t replace an API outright, but with the right context budget and traffic shape it can make a very large open model feel local—and give you much better visibility into where the performance and money actually go.
 
 ## Further reading
 

@@ -91,7 +91,7 @@ The homepage sample is a real cached row: `50.036017,14.326416` (Nad Mušlovkou 
 
 ### Pattern 3: Cap the number you most want to inflate
 
-**Energetická soběstačnost** is a heuristic. It is not hourly load matching. The comments in the function are the spec:
+**Energetická soběstačnost** is a heuristic rather than hourly load matching. The comments in the function are the spec:
 
 ```ts
 if (!hasBattery || batterySizeKwh <= 0) {
@@ -106,7 +106,7 @@ No battery: the 30–40% band, because daytime-only self-use is not independence
 
 There is a separate hourly cartoon at `/simulace`: a 24-hour irradiance curve, seasonal sunrise, three consumption patterns. It is a teaching tool. It does not feed the gauge.
 
-Monthly bars spread annual production across twelve PVGIS-shaped multipliers (December 0.30, June 1.40). I did not pull Google’s `monthlyFluxUrl`. The shape is Czech-latitude honest. It is not twelve independent measurements.
+Monthly bars spread annual production across twelve PVGIS-shaped multipliers (December 0.30, June 1.40). I did not pull Google’s `monthlyFluxUrl`; the shape stays Czech-latitude honest modeling, short of twelve independent measurements.
 
 {{< responsive-image src="images/solar-gauge.png" alt="Self-sufficiency gauge capped at 90 percent as a heuristic" maxWidth="720px" >}}
 

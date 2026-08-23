@@ -37,7 +37,7 @@ Three tempting features are missing on purpose.
 
 1. **No speech recognition.** If YouTube has no English captions, Dabing stops. The injector reports `no_english_captions`. The server turns an empty cue list into a job with `error="no_usable_captions"`. ASR on that laptop, live, next to Chrome, would be a second project.
 2. **No live OmniVoice on his machine.** OmniVoice wants NVIDIA CUDA or Apple MPS and more RAM than he has if you also want to stay ten to thirty seconds ahead of the playhead.
-3. **No rented GPU in the path he uses.** `docs/modal.md` exists so I would not re-derive the fallback later. It is not implemented. The README line is “Modal GPU (documented, not wired).”
+3. **No rented GPU in the path he uses.** `docs/modal.md` exists so I would not re-derive the fallback later; nobody has implemented it yet. The README line is “Modal GPU (documented, not wired).”
 
 ## Design patterns
 
@@ -64,7 +64,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
 `extension/lib/api.js` wraps that. The worker is the process that holds `host_permissions` for `http://127.0.0.1:8765/*`. The page origin never becomes the HTTP client.
 
-That is not a flourish. It is the difference between “works in my unpacked extension on a Mac” and “works in Chrome on his laptop after the next Chrome local-network prompt.” Commit `f850a56` is titled for this.
+That detail decides everything: it separates “works in my unpacked extension on a Mac” from “works in Chrome on his laptop after the next Chrome local-network prompt.” Commit `f850a56` is titled for this.
 
 ### Pattern 2: Hardware that says no
 
@@ -123,11 +123,11 @@ The MAIN-world script, `extension/injected.js`, tries, in order: a transcript al
 
 I would rather he see a red lamp than hear a hallucinated Czech paragraph over a cooking video with no text.
 
-Tests speak a tone. `server/tests/conftest.py` forces mock engines before the app import. The mock translator prefixes `[cs]`. The mock TTS writes a soft 196 Hz tone. Re-run 2026-08-19: `python -m pytest server/tests` → **46 passed** in 0.54 s. That is not a listening test. It is a promise that the job state machine, the WAV path, and the hardware default can be broken in CI without a GPU.
+Tests speak a tone. `server/tests/conftest.py` forces mock engines before the app import. The mock translator prefixes `[cs]`. The mock TTS writes a soft 196 Hz tone. Re-run 2026-08-19: `python -m pytest server/tests` → **46 passed** in 0.54 s — less a listening test than a promise that the job state machine, the WAV path, and the hardware default can be broken in CI without a GPU.
 
 ## What this cut does not do
 
-`docs/modal.md` exists because I can already see the video where Piper loses: dense, fast English, gold strip stuck red. The shape is: his Chrome still reads captions; those few kilobytes of JSON go to a token-gated Modal endpoint; opus-mt and OmniVoice run there; WAV chunks come back; the booth UI does not change. Do not send the video. Do not set `min_containers=1` and keep a T4 warm all month. The arithmetic in that file — about ten cents for a 40-minute video at a conservative RTF 0.2 on a T4 — is planning arithmetic from published Modal rates as of August 2026. It is not a billed run.
+`docs/modal.md` exists because I can already see the video where Piper loses: dense, fast English, gold strip stuck red. The shape is: his Chrome still reads captions; those few kilobytes of JSON go to a token-gated Modal endpoint; opus-mt and OmniVoice run there; WAV chunks come back; the booth UI does not change. Do not send the video. Do not set `min_containers=1` and keep a T4 warm all month. The arithmetic in that file — about ten cents for a 40-minute video at a conservative RTF 0.2 on a T4 — is planning arithmetic from published Modal rates as of August 2026, short of an actual billed run.
 
 Until that is wired, “we can always burst to a GPU” would be a slide.
 
@@ -145,6 +145,6 @@ There is leftover Mac copy in the tree — the manifest still says “generated 
 
 The work I care about here is smaller than a model card. A content script that will not fetch localhost. A worker that will. A probe that will not load the model that does not fit. A pipeline that prefers the next 45 seconds over the scene he already skipped. A red lamp when YouTube gave us nothing to say.
 
-Licenses for a house, not a store. Piper-tts is GPL-3.0. OmniVoice’s code is Apache-2.0; the weights are CC-BY-NC. That mix is acceptable for a private family install. It is not a license to wrap OmniVoice in a paid dubbing SaaS.
+Licenses for a house, not a store. Piper-tts is GPL-3.0. OmniVoice’s code is Apache-2.0; the weights are CC-BY-NC. That mix is acceptable for a private family install; a paid dubbing SaaS wrapped around OmniVoice would step outside it.
 
 If you only remember one thing: I did not put a cloud dubbing stack on my dad’s i5. I put Jirka on `127.0.0.1:8765`, and I stopped where the captions stop.
